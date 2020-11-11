@@ -6,52 +6,53 @@ export default class SynargyComponent extends HTMLElement {
   constructor() {
     super();
     this.data = {};
+    this.$binded_elems = [];
+    this.$events_list = [
+      //mouse
+      {
+        name: "s-onclick",
+        match: "onclick",
+      },
+      {
+        name: "s-ondblclick",
+        match: "ondblclick",
+      },
+      {
+        name: "s-onmouseout",
+        match: "onmouseout",
+      },
+      {
+        name: "s-onmousemove",
+        match: "onmousemove",
+      },
+      {
+        name: "s-onmouseup",
+        match: "onmouseup",
+      },
+      {
+        name: "s-onmousewheel",
+        match: "onmousewheel",
+      },
+      {
+        name: "s-onwheel",
+        match: "onwheel",
+      },
+      //keyboard
+      {
+        name: "s-onkeydown",
+        match: "onkeydown",
+      },
+      {
+        name: "s-onkeyup",
+        match: "onkeyup",
+      },
+      {
+        name: "s-onkeypress",
+        match: "onkeypress",
+      },
+    ];
   }
-  $binded_elems = [];
-  $events_list = [
-    //mouse
-    {
-      name: "s-onclick",
-      match: "onclick",
-    },
-    {
-      name: "s-ondblclick",
-      match: "ondblclick",
-    },
-    {
-      name: "s-onmouseout",
-      match: "onmouseout",
-    },
-    {
-      name: "s-onmousemove",
-      match: "onmousemove",
-    },
-    {
-      name: "s-onmouseup",
-      match: "onmouseup",
-    },
-    {
-      name: "s-onmousewheel",
-      match: "onmousewheel",
-    },
-    {
-      name: "s-onwheel",
-      match: "onwheel",
-    },
-    //keyboard
-    {
-      name: "s-onkeydown",
-      match: "onkeydown",
-    },
-    {
-      name: "s-onkeyup",
-      match: "onkeyup",
-    },
-    {
-      name: "s-onkeypress",
-      match: "onkeypress",
-    },
-  ];
+
   update_DOM_binds(path, value, prev_val, name) {
     this.$binded_elems.forEach((elem) => {
       if (elem.getAttribute("s-bind") === path) {
