@@ -7,7 +7,7 @@ export default class SynargyComponent extends HTMLElement {
     super();
     this.data = {};
     this.$binded_elems = [];
-    this.$bind_list = ["s-bind-text", "s-bind-do"];
+    this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render"];
 
     this.$events_list = [
       //mouse
@@ -56,17 +56,23 @@ export default class SynargyComponent extends HTMLElement {
   }
 
   update_DOM_binds(path, value, prev_val, name) {
-    this.$binded_elems.forEach((elem) => {
+    this.$binded_elems.forEach((el) => {
+      let elem = el.node;
       if (elem.getAttribute("s-bind-text")) {
         let attr = elem.getAttribute("s-bind-text");
         if (attr === path) {
           elem.innerText = value;
         }
       }
+      if (elem.getAttribute("s-bind-render")) {
+        let attr = elem.getAttribute("s-bind-render");
+        if (attr === path) {
+          elem.innerHTML = this.html(el.initial);
+        }
+      }
       if (elem.getAttribute("s-bind-do")) {
         let attr = elem.getAttribute("s-bind-do");
         let attr_do = elem.getAttribute("s-do");
-        console.log(attr_do);
         if (attr === path && attr_do) {
           this[attr_do](elem);
         }
@@ -97,15 +103,22 @@ export default class SynargyComponent extends HTMLElement {
   _get_binds() {
     this.$bind_list.forEach((bind) => {
       Array.from(document.querySelectorAll(`[${bind}]`)).forEach((elem) => {
-        console.log(elem);
-
-        this.$binded_elems.push(elem);
+        if (elem.getAttribute("s-bind-render")) {
+          this.$binded_elems.push({ node: elem, initial: elem.innerHTML });
+          elem.innerHTML = this.html(elem.innerHTML);
+        } else {
+          this.$binded_elems.push({ node: elem });
+          elem.innerHTML = this.html(elem.innerHTML);
+        }
       });
     });
   }
+  html(html) {
+    return Mustache.render(html, this);
+  }
   render(template) {
     this._set_observed_props();
-    this.innerHTML = Mustache.render(template(this), this);
+    this.innerHTML = template();
     this._parse_events();
     this._get_binds();
   }

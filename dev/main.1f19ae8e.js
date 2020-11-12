@@ -11394,7 +11394,7 @@ var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
     _this = _super.call(this);
     _this.data = {};
     _this.$binded_elems = [];
-    _this.$bind_list = ["s-bind-text", "s-bind-do"];
+    _this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render"];
     _this.$events_list = [//mouse
     {
       name: "s-onclick",
@@ -11436,7 +11436,9 @@ var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
     value: function update_DOM_binds(path, value, prev_val, name) {
       var _this2 = this;
 
-      this.$binded_elems.forEach(function (elem) {
+      this.$binded_elems.forEach(function (el) {
+        var elem = el.node;
+
         if (elem.getAttribute("s-bind-text")) {
           var attr = elem.getAttribute("s-bind-text");
 
@@ -11445,13 +11447,20 @@ var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
           }
         }
 
+        if (elem.getAttribute("s-bind-render")) {
+          var _attr = elem.getAttribute("s-bind-render");
+
+          if (_attr === path) {
+            elem.innerHTML = _this2.html(el.initial);
+          }
+        }
+
         if (elem.getAttribute("s-bind-do")) {
-          var _attr = elem.getAttribute("s-bind-do");
+          var _attr2 = elem.getAttribute("s-bind-do");
 
           var attr_do = elem.getAttribute("s-do");
-          console.log(attr_do);
 
-          if (_attr === path && attr_do) {
+          if (_attr2 === path && attr_do) {
             _this2[attr_do](elem);
           }
         }
@@ -11494,18 +11503,34 @@ var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
 
       this.$bind_list.forEach(function (bind) {
         Array.from(document.querySelectorAll("[".concat(bind, "]"))).forEach(function (elem) {
-          console.log(elem);
+          if (elem.getAttribute("s-bind-render")) {
+            _this5.$binded_elems.push({
+              node: elem,
+              initial: elem.innerHTML
+            });
 
-          _this5.$binded_elems.push(elem);
+            elem.innerHTML = _this5.html(elem.innerHTML);
+          } else {
+            _this5.$binded_elems.push({
+              node: elem
+            });
+
+            elem.innerHTML = _this5.html(elem.innerHTML);
+          }
         });
       });
+    }
+  }, {
+    key: "html",
+    value: function html(_html) {
+      return _mustache.default.render(_html, this);
     }
   }, {
     key: "render",
     value: function render(template) {
       this._set_observed_props();
 
-      this.innerHTML = _mustache.default.render(template(this), this);
+      this.innerHTML = template();
 
       this._parse_events();
 
@@ -11547,7 +11572,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var template = function template(self) {
-  return "<div>\n  <p s-bind-text=\"number\" id=\"counter\">{{self.$data.number}}</p>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-do=\"number\" s-do=\"greet\" id=\"counter\">{{$data.number}}</p>\n  <button s-onclick=\"add\" id=\"add\">add</button>\n</div>\n";
+  return "<div>\n  <p s-bind-text=\"number\" id=\"counter\">{{$data.number}}</p>\n  <div>\n  </div>\n  <ul s-bind-render=\"number\" >\n    {{#$data.arr}}\n    <li>{{.}}</li>\n  {{/$data.arr}}\n  </ul>\n  <button s-onclick=\"add\" id=\"add\">add</button>\n</div>\n";
 };
 
 var TestComp = /*#__PURE__*/function (_SynargyComponents) {
@@ -11562,8 +11587,9 @@ var TestComp = /*#__PURE__*/function (_SynargyComponents) {
 
     _this = _super.call(this);
     _this.data = {
-      number: 0,
-      number_2: 0
+      number: 25,
+      number_2: 0,
+      arr: [1, 2, 3, 4, 5]
     };
     return _this;
   }
@@ -11576,9 +11602,11 @@ var TestComp = /*#__PURE__*/function (_SynargyComponents) {
   }, {
     key: "add",
     value: function add() {
-      console.log(this.$data.number);
       this.$data.number++;
       this.$data.number_2++;
+      this.data.arr.push(1);
+      this.$data.arr = this.data.arr;
+      console.log(this.$data.arr);
     }
   }, {
     key: "connectedCallback",
@@ -11619,7 +11647,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54420" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56877" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
