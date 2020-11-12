@@ -11335,9 +11335,26 @@ function _setExports(ndebug) {
 }
 
 module.exports = _setExports(undefined);
-},{"assert":"../node_modules/assert/assert.js","stream":"../node_modules/stream-browserify/index.js","util":"../node_modules/util/util.js","buffer":"../node_modules/buffer/index.js"}],"../dist/synargy-components.js":[function(require,module,exports) {
-var define;
-var global = arguments[3];
+},{"assert":"../node_modules/assert/assert.js","stream":"../node_modules/stream-browserify/index.js","util":"../node_modules/util/util.js","buffer":"../node_modules/buffer/index.js"}],"../src/synargy-components.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _preludeLs = require("prelude-ls");
+
+var _onChange = _interopRequireDefault(require("on-change"));
+
+var _mustache = _interopRequireDefault(require("mustache"));
+
+var _assertPlus = require("assert-plus");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -11364,147 +11381,146 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
+  _inherits(SynargyComponent, _HTMLElement);
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+  var _super = _createSuper(SynargyComponent);
 
-(function (global, factory) {
-  (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prelude-ls'), require('on-change'), require('mustache'), require('assert-plus')) : typeof define === 'function' && define.amd ? define(['prelude-ls', 'on-change', 'mustache', 'assert-plus'], factory) : (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.synargyComponents = factory(null, global.onChange, global.Mustache));
-})(this, function (preludeLs, onChange, Mustache) {
-  'use strict';
+  function SynargyComponent() {
+    var _this;
 
-  function _interopDefaultLegacy(e) {
-    return e && _typeof(e) === 'object' && 'default' in e ? e : {
-      'default': e
-    };
+    _classCallCheck(this, SynargyComponent);
+
+    _this = _super.call(this);
+    _this.data = {};
+    _this.$binded_elems = [];
+    _this.$bind_list = ["s-bind-text", "s-bind-do"];
+    _this.$events_list = [//mouse
+    {
+      name: "s-onclick",
+      match: "onclick"
+    }, {
+      name: "s-ondblclick",
+      match: "ondblclick"
+    }, {
+      name: "s-onmouseout",
+      match: "onmouseout"
+    }, {
+      name: "s-onmousemove",
+      match: "onmousemove"
+    }, {
+      name: "s-onmouseup",
+      match: "onmouseup"
+    }, {
+      name: "s-onmousewheel",
+      match: "onmousewheel"
+    }, {
+      name: "s-onwheel",
+      match: "onwheel"
+    }, //keyboard
+    {
+      name: "s-onkeydown",
+      match: "onkeydown"
+    }, {
+      name: "s-onkeyup",
+      match: "onkeyup"
+    }, {
+      name: "s-onkeypress",
+      match: "onkeypress"
+    }];
+    return _this;
   }
 
-  var onChange__default = /*#__PURE__*/_interopDefaultLegacy(onChange);
+  _createClass(SynargyComponent, [{
+    key: "update_DOM_binds",
+    value: function update_DOM_binds(path, value, prev_val, name) {
+      var _this2 = this;
 
-  var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
+      this.$binded_elems.forEach(function (elem) {
+        if (elem.getAttribute("s-bind-text")) {
+          var attr = elem.getAttribute("s-bind-text");
 
-  var SynargyComponent = /*#__PURE__*/function (_HTMLElement) {
-    _inherits(SynargyComponent, _HTMLElement);
-
-    var _super = _createSuper(SynargyComponent);
-
-    function SynargyComponent() {
-      var _this;
-
-      _classCallCheck(this, SynargyComponent);
-
-      _this = _super.call(this);
-
-      _defineProperty(_assertThisInitialized(_this), "$binded_elems", []);
-
-      _defineProperty(_assertThisInitialized(_this), "$events_list", [//mouse
-      {
-        name: "s-onclick",
-        match: "onclick"
-      }, {
-        name: "s-ondblclick",
-        match: "ondblclick"
-      }, {
-        name: "s-onmouseout",
-        match: "onmouseout"
-      }, {
-        name: "s-onmousemove",
-        match: "onmousemove"
-      }, {
-        name: "s-onmouseup",
-        match: "onmouseup"
-      }, {
-        name: "s-onmousewheel",
-        match: "onmousewheel"
-      }, {
-        name: "s-onwheel",
-        match: "onwheel"
-      }, //keyboard
-      {
-        name: "s-onkeydown",
-        match: "onkeydown"
-      }, {
-        name: "s-onkeyup",
-        match: "onkeyup"
-      }, {
-        name: "s-onkeypress",
-        match: "onkeypress"
-      }]);
-
-      _this.data = {};
-      return _this;
-    }
-
-    _createClass(SynargyComponent, [{
-      key: "update_DOM_binds",
-      value: function update_DOM_binds(path, value, prev_val, name) {
-        this.$binded_elems.forEach(function (elem) {
-          if (elem.getAttribute("s-bind") === path) {
+          if (attr === path) {
             elem.innerText = value;
           }
-        });
-      }
-    }, {
-      key: "_parse_events",
-      value: function _parse_events() {
-        var _this2 = this;
+        }
 
-        this.$events_list.forEach(function (event) {
-          var elem = document.querySelectorAll("[".concat(event.name, "]"));
+        if (elem.getAttribute("s-bind-do")) {
+          var _attr = elem.getAttribute("s-bind-do");
 
-          if (elem.length !== 0) {
-            elem.forEach(function (el) {
-              el[event.match] = function (e) {
-                if (_this2[el.getAttribute(event.name)]) {
-                  _this2[el.getAttribute(event.name)](e);
-                } else {
-                  console.log(undefined);
-                }
-              };
-            });
+          var attr_do = elem.getAttribute("s-do");
+          console.log(attr_do);
+
+          if (_attr === path && attr_do) {
+            _this2[attr_do](elem);
           }
+        }
+      });
+    }
+  }, {
+    key: "_parse_events",
+    value: function _parse_events() {
+      var _this3 = this;
+
+      this.$events_list.forEach(function (event) {
+        var elem = document.querySelectorAll("[".concat(event.name, "]"));
+
+        if (elem.length !== 0) {
+          elem.forEach(function (el) {
+            el[event.match] = function (e) {
+              if (_this3[el.getAttribute(event.name)]) {
+                _this3[el.getAttribute(event.name)](e, elem);
+              } else {
+                console.log(undefined);
+              }
+            };
+          });
+        }
+      });
+    }
+  }, {
+    key: "_set_observed_props",
+    value: function _set_observed_props() {
+      var _this4 = this;
+
+      this.$data = (0, _onChange.default)(this.data, function (path, value, previousValue, name) {
+        _this4.update_DOM_binds(path, value, previousValue, name);
+      });
+    }
+  }, {
+    key: "_get_binds",
+    value: function _get_binds() {
+      var _this5 = this;
+
+      this.$bind_list.forEach(function (bind) {
+        Array.from(document.querySelectorAll("[".concat(bind, "]"))).forEach(function (elem) {
+          console.log(elem);
+
+          _this5.$binded_elems.push(elem);
         });
-      }
-    }, {
-      key: "_set_observed_props",
-      value: function _set_observed_props() {
-        var _this3 = this;
+      });
+    }
+  }, {
+    key: "render",
+    value: function render(template) {
+      this._set_observed_props();
 
-        this.$data = onChange__default['default'](this.data, function (path, value, previousValue, name) {
-          _this3.update_DOM_binds(path, value, previousValue, name);
-        });
-      }
-    }, {
-      key: "_get_binds",
-      value: function _get_binds() {
-        var _this4 = this;
+      this.innerHTML = _mustache.default.render(template(this), this);
 
-        Array.from(document.querySelectorAll("[s-bind]")).forEach(function (elem) {
-          _this4.$binded_elems.push(elem);
-        });
-      }
-    }, {
-      key: "render",
-      value: function render(template) {
-        this._set_observed_props();
+      this._parse_events();
 
-        this.innerHTML = Mustache__default['default'].render(template(this), this);
-
-        this._parse_events();
-
-        this._get_binds();
-      }
-    }]);
-
-    return SynargyComponent;
-  }( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+      this._get_binds();
+    }
+  }]);
 
   return SynargyComponent;
-});
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+exports.default = SynargyComponent;
 },{"prelude-ls":"../node_modules/prelude-ls/lib/index.js","on-change":"../node_modules/on-change/index.js","mustache":"../node_modules/mustache/mustache.js","assert-plus":"../node_modules/assert-plus/assert.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
-var _synargyComponents = _interopRequireDefault(require("../dist/synargy-components"));
+var _synargyComponents = _interopRequireDefault(require("../src/synargy-components"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11531,7 +11547,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var template = function template() {
-  return "<div>\n  <p s-bind=\"number\" id=\"counter\">55</p>\n  <p s-bind=\"number\" id=\"counter\">55</p>\n  <p  id=\"counter\">{{$data.number}}</p>\n  <button s-onclick=\"add\">add</button>\n</div>\n";
+  return "<div>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-do=\"number\" s-do=\"greet\" id=\"counter\">{{$data.number}}</p>\n  <button s-onclick=\"add\">add</button>\n</div>\n";
 };
 
 var TestComp = /*#__PURE__*/function (_SynargyComponents) {
@@ -11547,14 +11563,16 @@ var TestComp = /*#__PURE__*/function (_SynargyComponents) {
     _this = _super.call(this);
     _this.data = {
       number: 0,
-      number_2: 15
+      number_2: 0
     };
     return _this;
   }
 
   _createClass(TestComp, [{
     key: "greet",
-    value: function greet() {}
+    value: function greet() {
+      console.log("hello");
+    }
   }, {
     key: "add",
     value: function add() {
@@ -11573,7 +11591,7 @@ var TestComp = /*#__PURE__*/function (_SynargyComponents) {
 }(_synargyComponents.default);
 
 customElements.define("test-comp", TestComp);
-},{"../dist/synargy-components":"../dist/synargy-components.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../src/synargy-components":"../src/synargy-components.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -11601,7 +11619,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54825" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54059" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

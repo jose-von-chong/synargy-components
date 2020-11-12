@@ -5,6 +5,8 @@ export default {
   output: {
     file: "./dist/synargy-components.js",
     format: "cjs",
+    watch: true,
+  
   },
   plugins: [
     inject({

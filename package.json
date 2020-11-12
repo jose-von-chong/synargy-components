@@ -8,7 +8,7 @@
   "description": "",
   "scripts": {
     "dev": "parcel run ./test/*.html --out-dir ./dev",
-    "bundle": "rollup --config",
+    "bundle": "rollup --config --watch",
     "prod": "rollup --config"
   },
   "author": "",

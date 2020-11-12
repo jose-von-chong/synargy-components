@@ -7,6 +7,8 @@ export default class SynargyComponent extends HTMLElement {
     super();
     this.data = {};
     this.$binded_elems = [];
+    this.$bind_list = ["s-bind-text", "s-bind-do"];
+
     this.$events_list = [
       //mouse
       {
@@ -55,8 +57,19 @@ export default class SynargyComponent extends HTMLElement {
 
   update_DOM_binds(path, value, prev_val, name) {
     this.$binded_elems.forEach((elem) => {
-      if (elem.getAttribute("s-bind") === path) {
-        elem.innerText = value;
+      if (elem.getAttribute("s-bind-text")) {
+        let attr = elem.getAttribute("s-bind-text");
+        if (attr === path) {
+          elem.innerText = value;
+        }
+      }
+      if (elem.getAttribute("s-bind-do")) {
+        let attr = elem.getAttribute("s-bind-do");
+        let attr_do = elem.getAttribute("s-do");
+        console.log(attr_do);
+        if (attr === path && attr_do) {
+          this[attr_do](elem);
+        }
       }
     });
   }
@@ -67,7 +80,7 @@ export default class SynargyComponent extends HTMLElement {
         elem.forEach((el) => {
           el[event.match] = (e) => {
             if (this[el.getAttribute(event.name)]) {
-              this[el.getAttribute(event.name)](e);
+              this[el.getAttribute(event.name)](e, elem);
             } else {
               console.log(undefined);
             }
@@ -82,8 +95,12 @@ export default class SynargyComponent extends HTMLElement {
     });
   }
   _get_binds() {
-    Array.from(document.querySelectorAll("[s-bind]")).forEach((elem) => {
-      this.$binded_elems.push(elem);
+    this.$bind_list.forEach((bind) => {
+      Array.from(document.querySelectorAll(`[${bind}]`)).forEach((elem) => {
+        console.log(elem);
+
+        this.$binded_elems.push(elem);
+      });
     });
   }
   render(template) {
