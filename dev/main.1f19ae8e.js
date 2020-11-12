@@ -11546,8 +11546,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var template = function template() {
-  return "<div>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-do=\"number\" s-do=\"greet\" id=\"counter\">{{$data.number}}</p>\n  <button s-onclick=\"add\">add</button>\n</div>\n";
+var template = function template(self) {
+  return "<div>\n  <p s-bind-text=\"number\" id=\"counter\">{{self.$data.number}}</p>\n  <p s-bind-text=\"number\" id=\"counter\">55</p>\n  <p s-bind-do=\"number\" s-do=\"greet\" id=\"counter\">{{$data.number}}</p>\n  <button s-onclick=\"add\" id=\"add\">add</button>\n</div>\n";
 };
 
 var TestComp = /*#__PURE__*/function (_SynargyComponents) {
@@ -11619,7 +11619,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54059" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54420" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

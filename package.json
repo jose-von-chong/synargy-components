@@ -4,7 +4,7 @@
   "source": "src/synargy-components.js",
   "module": "src/synargy-components.module.js",
   "unpkg": "src/synargy-components.umd.js",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "scripts": {
     "dev": "parcel run ./test/*.html --out-dir ./dev",
@@ -14,13 +14,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-inject": "^4.0.2",
     "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4",
     "rollup": "^2.33.1"
   },
   "dependencies": {
-    "@rollup/plugin-inject": "^4.0.2",
-    "install": "^0.13.0",
     "mustache": "^4.0.1",
     "on-change": "^2.2.0"
   }
