@@ -4,11 +4,11 @@
   "source": "src/synargy-components.js",
   "module": "src/synargy-components.module.js",
   "unpkg": "src/synargy-components.umd.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "scripts": {
     "dev": "parcel run ./test/*.html --out-dir ./dev",
-    "bundle": "rollup --config --watch",
+    "bundle": "rollup --config ",
     "prod": "rollup --config"
   },
   "author": "",

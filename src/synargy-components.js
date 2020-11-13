@@ -2,12 +2,14 @@ import { even } from "prelude-ls";
 import onChange from "on-change";
 import Mustache from "mustache";
 import { func, object } from "assert-plus";
+
+
 export default class SynargyComponent extends HTMLElement {
   constructor() {
     super();
     this.data = {};
     this.$binded_elems = [];
-    this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render"];
+    this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render", "s-bind-template"];
 
     this.$events_list = [
       //mouse
@@ -105,10 +107,8 @@ export default class SynargyComponent extends HTMLElement {
       Array.from(document.querySelectorAll(`[${bind}]`)).forEach((elem) => {
         if (elem.getAttribute("s-bind-render")) {
           this.$binded_elems.push({ node: elem, initial: elem.innerHTML });
-          elem.innerHTML = this.html(elem.innerHTML);
         } else {
           this.$binded_elems.push({ node: elem });
-          elem.innerHTML = this.html(elem.innerHTML);
         }
       });
     });
