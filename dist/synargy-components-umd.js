@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prelude-ls'), require('on-change'), require('mustache'), require('assert-plus')) :
-  typeof define === 'function' && define.amd ? define(['prelude-ls', 'on-change', 'mustache', 'assert-plus'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.synargyComponent = factory(null, global.onChange, global.Mustache));
-}(this, (function (preludeLs, onChange, Mustache) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prelude-ls'), require('on-change'), require('handlebars'), require('mustache'), require('assert-plus')) :
+  typeof define === 'function' && define.amd ? define(['prelude-ls', 'on-change', 'handlebars', 'mustache', 'assert-plus'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.synargyComponent = factory(null, global.onChange, null, global.Mustache));
+}(this, (function (preludeLs, onChange, handlebars, Mustache) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -14,7 +14,7 @@
       super();
       this.data = {};
       this.$binded_elems = [];
-      this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render", "s-bind-template"];
+      this.$bind_list = ["s-bind-text", "s-bind-do"];
 
       this.$events_list = [
         //mouse
@@ -71,12 +71,7 @@
             elem.innerText = value;
           }
         }
-        if (elem.getAttribute("s-bind-render")) {
-          let attr = elem.getAttribute("s-bind-render");
-          if (attr === path) {
-            elem.innerHTML = this.html(el.initial);
-          }
-        }
+
         if (elem.getAttribute("s-bind-do")) {
           let attr = elem.getAttribute("s-bind-do");
           let attr_do = elem.getAttribute("s-do");
@@ -110,20 +105,20 @@
     _get_binds() {
       this.$bind_list.forEach((bind) => {
         Array.from(document.querySelectorAll(`[${bind}]`)).forEach((elem) => {
-          if (elem.getAttribute("s-bind-render")) {
-            this.$binded_elems.push({ node: elem, initial: elem.innerHTML });
-          } else {
-            this.$binded_elems.push({ node: elem });
-          }
+          this.$binded_elems.push({ node: elem });
         });
       });
     }
     html(html) {
       return Mustache__default['default'].render(html, this);
     }
+    get_attributes() {
+      console.log(this.attributes);
+    }
     render(template) {
       this._set_observed_props();
-      this.innerHTML = template();
+      this.get_attributes();
+      this.innerHTML = this.html(template(this));
       this._parse_events();
       this._get_binds();
     }

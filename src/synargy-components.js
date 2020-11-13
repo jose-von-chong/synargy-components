@@ -1,15 +1,15 @@
 import { even } from "prelude-ls";
 import onChange from "on-change";
+import Handlebars from "handlebars";
 import Mustache from "mustache";
 import { func, object } from "assert-plus";
-
 
 export default class SynargyComponent extends HTMLElement {
   constructor() {
     super();
     this.data = {};
     this.$binded_elems = [];
-    this.$bind_list = ["s-bind-text", "s-bind-do", "s-bind-render", "s-bind-template"];
+    this.$bind_list = ["s-bind-text", "s-bind-do"];
 
     this.$events_list = [
       //mouse
@@ -66,12 +66,7 @@ export default class SynargyComponent extends HTMLElement {
           elem.innerText = value;
         }
       }
-      if (elem.getAttribute("s-bind-render")) {
-        let attr = elem.getAttribute("s-bind-render");
-        if (attr === path) {
-          elem.innerHTML = this.html(el.initial);
-        }
-      }
+
       if (elem.getAttribute("s-bind-do")) {
         let attr = elem.getAttribute("s-bind-do");
         let attr_do = elem.getAttribute("s-do");
@@ -105,20 +100,20 @@ export default class SynargyComponent extends HTMLElement {
   _get_binds() {
     this.$bind_list.forEach((bind) => {
       Array.from(document.querySelectorAll(`[${bind}]`)).forEach((elem) => {
-        if (elem.getAttribute("s-bind-render")) {
-          this.$binded_elems.push({ node: elem, initial: elem.innerHTML });
-        } else {
-          this.$binded_elems.push({ node: elem });
-        }
+        this.$binded_elems.push({ node: elem });
       });
     });
   }
   html(html) {
     return Mustache.render(html, this);
   }
+  get_attributes() {
+    console.log(this.attributes);
+  }
   render(template) {
     this._set_observed_props();
-    this.innerHTML = template();
+    this.get_attributes();
+    this.innerHTML = this.html(template(this));
     this._parse_events();
     this._get_binds();
   }
